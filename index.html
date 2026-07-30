@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <title>Alif & Sabrina Wedding</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
+
 body {
     margin:0;
     font-family: "Georgia", serif;
@@ -33,20 +38,47 @@ h1 {
     border-radius:20px;
 }
 
-textarea {
+input, textarea {
+
     width:90%;
-    height:100px;
-    margin-top:20px;
     padding:10px;
+    margin-top:15px;
+    border-radius:10px;
+    border:1px solid #ddd;
+
+}
+
+textarea {
+
+    height:100px;
+
 }
 
 button {
+
     background:#800000;
     color:white;
     border:none;
     padding:12px 30px;
     border-radius:20px;
     margin-top:15px;
+    cursor:pointer;
+
+}
+
+#wishes {
+
+    margin-top:30px;
+
+}
+
+.wish-card {
+
+    background:#fff8ef;
+    padding:15px;
+    margin:15px;
+    border-radius:15px;
+
 }
 
 </style>
@@ -56,7 +88,9 @@ button {
 
 <body>
 
+
 <div class="container">
+
 
 <h1>
 DR MUHAMMAD ALIF AIMAN
@@ -72,9 +106,12 @@ NUR SABRINA
 </div>
 
 
+
 <div class="card">
 
+
 <h2>Digital Guestbook</h2>
+
 
 <p>
 Assalamualaikum dan terima kasih kerana hadir ke majlis kami.
@@ -82,19 +119,172 @@ Sila tinggalkan ucapan dan doa buat kami.
 </p>
 
 
-<textarea placeholder="Tulis ucapan anda di sini..."></textarea>
+<input 
+id="name"
+placeholder="Nama anda">
+
+
+<textarea 
+id="message"
+placeholder="Tulis ucapan anda di sini...">
+</textarea>
+
 
 <br>
 
-<button>
+
+<button onclick="sendWish()">
 Hantar Ucapan
 </button>
 
 
-</div>
+<p id="status"></p>
 
 
 </div>
+
+
+<div id="wishes">
+
+<h2>Ucapan Tetamu</h2>
+
+</div>
+
+
+
+</div>
+
+
+
+<script>
+
+
+const supabaseUrl = "https://myfezwspfogpwelwdzzo.supabase.co/rest/v1/";
+
+const supabaseKey = "sb_publishable_ldG3XaF9OtIx4gHknXpGaA_OTuPN5Th";
+
+
+const client = supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+);
+
+
+
+async function sendWish(){
+
+
+const name = document.getElementById("name").value;
+
+const message = document.getElementById("message").value;
+
+
+
+if(name === "" || message === ""){
+
+document.getElementById("status").innerHTML =
+"Sila isi nama dan ucapan 🤍";
+
+return;
+
+}
+
+
+
+const { error } = await client
+.from("wishes")
+.insert({
+
+name:name,
+message:message
+
+});
+
+
+
+if(error){
+
+document.getElementById("status").innerHTML =
+"Maaf, ucapan tidak berjaya dihantar.";
+
+}
+
+else{
+
+
+document.getElementById("status").innerHTML =
+"Terima kasih atas ucapan anda 🤍";
+
+
+document.getElementById("name").value="";
+document.getElementById("message").value="";
+
+
+loadWishes();
+
+
+}
+
+
+}
+
+
+
+async function loadWishes(){
+
+
+const {data,error} = await client
+.from("wishes")
+.select("*")
+.order("created_at",
+{ascending:false});
+
+
+
+if(data){
+
+
+let output="";
+
+
+data.forEach(wish=>{
+
+
+output += `
+
+<div class="wish-card">
+
+<strong>${wish.name}</strong>
+
+<br>
+
+${wish.message}
+
+</div>
+
+`;
+
+
+});
+
+
+document.getElementById("wishes").innerHTML =
+"<h2>Ucapan Tetamu</h2>" + output;
+
+
+}
+
+
+}
+
+
+
+loadWishes();
+
+
+</script>
+
 
 </body>
+
 </html>
