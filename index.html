@@ -204,8 +204,10 @@ message:message
 
 if(error){
 
+console.log(error);
+
 document.getElementById("status").innerHTML =
-"Maaf, ucapan tidak berjaya dihantar.";
+error.message;
 
 }
 
