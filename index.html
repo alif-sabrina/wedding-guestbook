@@ -293,32 +293,6 @@ margin-top:10px;
 color:#5A1A1A;
 
 }
-
-#musicBtn{
-
-position:fixed;
-bottom:20px;
-right:20px;
-
-width:60px;
-height:60px;
-
-border-radius:50%;
-
-font-size:26px;
-
-background:#800000;
-color:white;
-
-border:none;
-
-cursor:pointer;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.3);
-
-z-index:9999;
-
-}
     
 </style>
 
@@ -933,60 +907,15 @@ wishIndex = 0;
 
 }
 
-const music =
-document.getElementById("bgMusic");
 
-
-const musicBtn =
-document.getElementById("musicBtn");
-
-
-function toggleMusic(){
-
-if(music.paused){
-
-music.play();
-
-musicBtn.innerHTML="⏸";
-
-}
-
-else{
-
-music.pause();
-
-musicBtn.innerHTML="🎵";
-
-}
-
-}
 
 loadWishes();
 
 loadPhotos();
-
-music.play().catch(()=>{});
     
 </script>
 
-<audio
-id="bgMusic"
-loop>
 
-<source
-src="Sudden Shower (소나기) - ECLIPSE - violin cover.mp3"
-type="audio/mpeg">
-
-</audio>
-
-<button
-id="musicBtn"
-onclick="toggleMusic()">
-
-🎵
-
-</button>
-    
 </body>
 
 </html>
