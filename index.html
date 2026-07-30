@@ -344,7 +344,7 @@ SABRINA
 
 
 <p>
-Tinggalkan ucapan dan kongsikan moment bersama kami 🤍
+Tinggalkan ucapan dan kongsikan moment majlis bersama kami 🤍
 </p>
 
 
@@ -362,7 +362,7 @@ placeholder="Tulis ucapan anda (optional)...">
 
 
 <p>
-📸 Kongsi gambar (optional)
+📸 Upload Moment Majlis
 </p>
 
 
@@ -494,27 +494,44 @@ const client = supabase.createClient(
 // UCAPAN TETAMU
 // =====================
 
-async function sendWish(){
+async function sendMemory(){
 
 
-const name = document.getElementById("name").value;
-
-const message = document.getElementById("message").value;
-
+const name =
+document.getElementById("name").value;
 
 
-if(name === "" || message === ""){
+const message =
+document.getElementById("message").value;
+
+
+const photo =
+document.getElementById("photo").files[0];
+
+
+
+if(name === ""){
+
 
 document.getElementById("status").innerHTML =
-"Sila isi nama dan ucapan 🤍";
+"Sila isi nama dahulu 🤍";
+
 
 return;
+
 
 }
 
 
+// =====================
+// SIMPAN UCAPAN
+// =====================
 
-const { error } = await client
+
+if(message !== ""){
+
+
+const {error} = await client
 .from("wishes")
 .insert({
 
@@ -524,33 +541,112 @@ message:message
 });
 
 
-
 if(error){
 
-document.getElementById("status").innerHTML =
-"Maaf, ucapan tidak berjaya dihantar.";
+console.log(error);
 
 }
 
-else{
+}
+
+
+
+// =====================
+// UPLOAD GAMBAR
+// =====================
+
+
+if(photo){
+
 
 
 document.getElementById("status").innerHTML =
-"Terima kasih atas ucapan anda 🤍";
+"Sedang memuat naik gambar... 🤍";
+
+
+
+const formData = new FormData();
+
+
+
+formData.append(
+"file",
+photo
+);
+
+
+
+formData.append(
+"upload_preset",
+uploadPreset
+);
+
+
+
+const response = await fetch(
+
+`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+
+{
+
+method:"POST",
+
+body:formData
+
+}
+
+);
+
+
+
+const data = await response.json();
+
+
+
+if(data.secure_url){
+
+
+
+await client
+.from("photos")
+.insert({
+
+image_url:data.secure_url,
+
+uploader:name
+
+});
+
+
+}
+
+
+
+}
+
+
+
+
+document.getElementById("status").innerHTML =
+"Terima kasih kerana berkongsi kenangan 🤍";
+
 
 
 document.getElementById("name").value="";
+
 document.getElementById("message").value="";
+
+document.getElementById("photo").value="";
+
 
 
 loadWishes();
 
+loadPhotos();
+
+
 
 }
-
-}
-
-
 
 // =====================
 // UPLOAD GAMBAR CLOUDINARY
