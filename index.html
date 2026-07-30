@@ -77,25 +77,18 @@ button {
 .wish-card {
 
     background:#fff8ef;
-    padding:20px;
-    border-radius:15px;
-    width:250px;
-    min-height:120px;
+    padding:35px 25px;
+    border-radius:20px;
+    max-width:450px;
+    min-height:180px;
+    margin:30px auto;
     display:flex;
     flex-direction:column;
     justify-content:center;
+    align-items:center;
     box-shadow:0 5px 15px rgba(0,0,0,0.08);
 
-}
-
-
-.wish-container {
-
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-top:20px;
+    animation: fadeWish 1s ease;
 
 }
 
@@ -103,17 +96,19 @@ button {
 .wish-name {
 
     font-weight:bold;
-    font-size:18px;
-    margin-bottom:10px;
+    font-size:22px;
+    margin-bottom:20px;
 
 }
 
 
 .wish-message {
 
-    font-size:15px;
+    font-size:17px;
+    line-height:1.6;
 
 }
+
 
 
 @media(max-width:600px){
@@ -518,10 +513,15 @@ output;
 
 
 
-
 // =====================
 // PAPARKAN UCAPAN
 // =====================
+
+
+let allWishes = [];
+
+let wishIndex = 0;
+
 
 
 async function loadWishes(){
@@ -531,64 +531,91 @@ const {data,error} = await client
 .from("wishes")
 .select("*")
 .order("created_at",
-{ascending:false})
-.limit(3);
+{ascending:false});
 
 
 
 if(data){
 
 
-let output="";
+allWishes = data;
 
 
-data.forEach(wish=>{
+showSingleWish();
 
 
-output += `
-
-<div class="wish-card">
-
-<div class="wish-name">
-${wish.name}
-</div>
+setInterval(showSingleWish,5000);
 
 
-<div class="wish-message">
-${wish.message}
-</div>
+}
 
 
-</div>
-
-`;
+}
 
 
-});
+
+
+
+function showSingleWish(){
+
+
+if(allWishes.length === 0){
+
+return;
+
+}
+
+
+
+let wish = allWishes[wishIndex];
 
 
 
 document.getElementById("wishes").innerHTML =
 
+
 `
 
 <h2>💌 Ucapan Tetamu</h2>
 
-<div class="wish-container">
 
-${output}
+<div class="wish-card">
+
+
+<div class="wish-name">
+
+${wish.name}
 
 </div>
+
+
+
+<div class="wish-message">
+
+${wish.message}
+
+</div>
+
+
+</div>
+
 
 `;
 
 
 
+wishIndex++;
+
+
+
+if(wishIndex >= allWishes.length){
+
+wishIndex = 0;
+
 }
 
 
 }
-
 
 
 
