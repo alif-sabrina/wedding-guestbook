@@ -555,7 +555,6 @@ const {data,error} = await client
 {ascending:false});
 
 
-
 if(data){
 
 
@@ -572,6 +571,18 @@ clearInterval(wishTimer);
 
 wishTimer = setInterval(showSingleWish,5000);
 
+
+}
+
+}
+
+
+function showSingleWish(){
+
+
+if(allWishes.length === 0){
+
+return;
 
 }
 
