@@ -111,7 +111,14 @@ Login
 <span id="photoCount">0</span>
 </h3>
 
+<hr>
 
+<h2>💌 Senarai Ucapan</h2>
+
+<div id="wishList">
+
+</div>
+  
 </div>
 
 
@@ -216,6 +223,64 @@ wishes;
 
 document.getElementById("photoCount").innerHTML =
 photos;
+
+loadAdminWishes();
+  
+}
+
+async function loadAdminWishes(){
+
+
+const {data,error} = await client
+.from("wishes")
+.select("*")
+.order("created_at",{ascending:false});
+
+
+
+if(data){
+
+
+let output = "";
+
+
+
+data.forEach(wish=>{
+
+
+output += `
+
+
+<div style="
+background:#fff8ef;
+padding:20px;
+margin:15px;
+border-radius:15px;
+">
+
+
+<strong>${wish.name}</strong>
+
+<br><br>
+
+${wish.message}
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+
+document.getElementById("wishList").innerHTML =
+output;
+
+
+}
 
 
 }
