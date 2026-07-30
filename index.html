@@ -93,6 +93,25 @@ button {
 }
 
 
+@keyframes fadeWish {
+
+from {
+
+    opacity:0;
+    transform:translateY(20px);
+
+}
+
+to {
+
+    opacity:1;
+    transform:translateY(0);
+
+}
+
+}
+
+
 .wish-name {
 
     font-weight:bold;
@@ -522,6 +541,8 @@ let allWishes = [];
 
 let wishIndex = 0;
 
+let wishTimer;
+
 
 
 async function loadWishes(){
@@ -541,13 +562,15 @@ if(data){
 allWishes = data;
 
 
+wishIndex = 0;
+
+
 showSingleWish();
 
 
-setInterval(showSingleWish,5000);
+clearInterval(wishTimer);
 
-
-}
+wishTimer = setInterval(showSingleWish,5000);
 
 
 }
