@@ -276,6 +276,23 @@ transition:0.3s;
 transform:scale(1.03);
 
 }
+
+.photo-card{
+
+background:#fff8ef;
+padding:10px;
+border-radius:15px;
+
+}
+
+
+.uploader-name{
+
+font-size:14px;
+margin-top:10px;
+color:#5A1A1A;
+
+}
     
 </style>
 
@@ -735,10 +752,23 @@ data.forEach(photo=>{
 
 output += `
 
+<div class="photo-card">
+
 <img
 src="${photo.image_url}"
 onclick="openLightbox('${photo.image_url}')"
 >
+
+
+<p class="uploader-name">
+
+Dikongsi oleh<br>
+<b>${photo.uploader}</b>
+
+</p>
+
+
+</div>
 
 `;
 
