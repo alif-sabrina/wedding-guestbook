@@ -340,39 +340,54 @@ SABRINA
 <div class="card">
 
 
-<h2>Digital Guestbook</h2>
+<h2>💌 Digital Guestbook</h2>
 
 
 <p>
-Assalamualaikum dan terima kasih kerana hadir ke majlis kami.
-Sila tinggalkan ucapan dan doa buat kami.
+Tinggalkan ucapan dan kongsikan moment bersama kami 🤍
 </p>
 
 
 <input 
 id="name"
-placeholder="Nama anda">
+placeholder="Nama anda *">
+
 
 
 <textarea 
 id="message"
-placeholder="Tulis ucapan anda di sini...">
+placeholder="Tulis ucapan anda (optional)...">
 </textarea>
+
+
+
+<p>
+📸 Kongsi gambar (optional)
+</p>
+
+
+<input
+type="file"
+id="photo"
+accept="image/*">
+
 
 
 <br>
 
 
-<button onclick="sendWish()">
-Hantar Ucapan
+<button onclick="sendMemory()">
+
+Hantar Kenangan 🤍
+
 </button>
+
 
 
 <p id="status"></p>
 
 
 </div>
-
 
 <div id="wishes">
 
