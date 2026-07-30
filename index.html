@@ -223,7 +223,6 @@ Upload Gambar
 
 <script>
 
-
 const supabaseUrl = "https://myfezwspfogpwelwdzzo.supabase.co";
 
 const supabaseKey = "sb_publishable_ldG3XaF9OtIx4gHknXpGaA_OTuPN5Th";
@@ -235,6 +234,9 @@ const client = supabase.createClient(
 );
 
 
+// =====================
+// UCAPAN TETAMU
+// =====================
 
 async function sendWish(){
 
@@ -287,6 +289,18 @@ document.getElementById("message").value="";
 
 loadWishes();
 
+
+}
+
+}
+
+
+
+// =====================
+// UPLOAD GAMBAR CLOUDINARY
+// =====================
+
+
 const cloudName = "du42vuma";
 
 const uploadPreset = "alif-sabrina-wedding";
@@ -295,12 +309,11 @@ const uploadPreset = "alif-sabrina-wedding";
 
 async function uploadPhoto(){
 
-alert("Upload button berfungsi");
 
 const file =
 document.getElementById("photo").files[0];
 
-}
+
 
 if(!file){
 
@@ -320,9 +333,17 @@ document.getElementById("photoStatus").innerHTML =
 
 const formData = new FormData();
 
-formData.append("file", file);
 
-formData.append("upload_preset", uploadPreset);
+formData.append(
+"file",
+file
+);
+
+
+formData.append(
+"upload_preset",
+uploadPreset
+);
 
 
 
@@ -350,13 +371,24 @@ if(data.secure_url){
 
 
 
-await client
+const {error} = await client
 .from("photos")
 .insert({
 
 image_url:data.secure_url
 
 });
+
+
+
+if(error){
+
+document.getElementById("photoStatus").innerHTML =
+"Gambar berjaya upload tetapi gagal simpan.";
+
+return;
+
+}
 
 
 
@@ -386,10 +418,16 @@ document.getElementById("photoStatus").innerHTML =
 
 
 
+
+// =====================
+// PAPARKAN GALLERY
+// =====================
+
+
 async function loadPhotos(){
 
 
-const {data,error}=await client
+const {data,error} = await client
 .from("photos")
 .select("*")
 .order("created_at",
@@ -413,7 +451,6 @@ output += `
 `;
 
 
-
 });
 
 
@@ -428,13 +465,11 @@ output;
 
 
 
-loadPhotos();
-
-}
 
 
-}
-
+// =====================
+// PAPARKAN UCAPAN
+// =====================
 
 
 async function loadWishes(){
@@ -486,9 +521,12 @@ document.getElementById("wishes").innerHTML =
 
 
 
+
+
 loadWishes();
 
-
+loadPhotos();
+    
 </script>
 
 
