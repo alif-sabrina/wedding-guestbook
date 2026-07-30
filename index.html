@@ -390,6 +390,18 @@ type="file"
 id="photo"
 accept="image/*">
 
+<br>
+
+<img
+id="preview"
+style="
+display:none;
+width:220px;
+max-width:90%;
+margin-top:15px;
+border-radius:15px;
+">
+    
 <br><br>
 
 <img
@@ -541,6 +553,32 @@ reader.readAsDataURL(file);
 
 }
 
+document.getElementById("photo").addEventListener(
+"change",
+function(){
+
+const file = this.files[0];
+
+if(file){
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const img = document.getElementById("preview");
+
+img.src = e.target.result;
+
+img.style.display = "block";
+
+}
+
+reader.readAsDataURL(file);
+
+}
+
+});
+    
 async function uploadPhoto(){
 
 
