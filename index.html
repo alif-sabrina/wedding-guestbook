@@ -255,11 +255,23 @@ Hantar Ucapan
 Kongsikan gambar kenangan anda bersama kami 🤍
 </p>
 
-<input 
-type="file" 
+<input
+type="file"
 id="photo"
-accept="image/*">
+accept="image/*"
+onchange="previewPhoto()">
 
+<br><br>
+
+<img
+id="preview"
+style="
+display:none;
+width:220px;
+max-width:90%;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+">
 
 <br>
 
@@ -370,7 +382,29 @@ const cloudName = "du42vuma";
 
 const uploadPreset = "alif-sabrina-wedding";
 
+function previewPhoto(){
 
+const file = document.getElementById("photo").files[0];
+
+if(!file){
+
+document.getElementById("preview").style.display="none";
+return;
+
+}
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+document.getElementById("preview").src = e.target.result;
+document.getElementById("preview").style.display="block";
+
+};
+
+reader.readAsDataURL(file);
+
+}
 
 async function uploadPhoto(){
 
@@ -462,6 +496,7 @@ document.getElementById("photoStatus").innerHTML =
 
 
 document.getElementById("photo").value="";
+document.getElementById("preview").style.display="none";
 
 
 loadPhotos();
