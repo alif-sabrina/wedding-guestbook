@@ -356,7 +356,7 @@ placeholder="Nama anda *">
 
 <textarea 
 id="message"
-placeholder="Tulis ucapan anda (optional)...">
+placeholder="Tulis ucapan anda">
 </textarea>
 
 
@@ -378,9 +378,17 @@ accept="image/*">
 
 <button onclick="sendMemory()">
 
-Hantar Kenangan 🤍
+Hantar 🤍
 
 </button>
+
+
+<p>
+📌 Gambar dan ucapan anda akan dipaparkan dalam guestbook kami 🤍
+</p>
+
+
+<p id="status"></p>
 
 
 
@@ -569,7 +577,7 @@ uploader:name
 
 
 document.getElementById("status").innerHTML =
-"Terima kasih kerana berkongsi kenangan 🤍";
+"Terima kasih 🤍";
 
 
 
