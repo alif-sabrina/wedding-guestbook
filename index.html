@@ -585,7 +585,18 @@ async function uploadPhoto(){
 const file =
 document.getElementById("photo").files[0];
 
+const uploader =
+document.getElementById("uploader").value;
 
+
+if(uploader === ""){
+
+document.getElementById("photoStatus").innerHTML =
+"Sila masukkan nama anda 🤍";
+
+return;
+
+}
 
 if(!file){
 
@@ -643,11 +654,15 @@ if(data.secure_url){
 
 
 
+const uploader = document.getElementById("uploader").value;
+
+
 const {error} = await client
 .from("photos")
 .insert({
 
-image_url:data.secure_url
+image_url:data.secure_url,
+uploader:uploader
 
 });
 
@@ -669,6 +684,7 @@ document.getElementById("photoStatus").innerHTML =
 
 
 document.getElementById("photo").value="";
+document.getElementById("uploader").value="";
 document.getElementById("preview").style.display="none";
 
 
