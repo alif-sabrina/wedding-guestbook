@@ -81,6 +81,34 @@ button {
 
 }
 
+.gallery {
+
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+
+}
+
+
+.gallery img {
+
+width:100%;
+height:180px;
+object-fit:cover;
+border-radius:15px;
+
+}
+
+@media(max-width:600px){
+
+.gallery {
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+    
 </style>
 
 </head>
@@ -154,7 +182,44 @@ Hantar Ucapan
 
 </div>
 
+<div class="card">
 
+<h2>📸 Upload Moment Majlis</h2>
+
+<p>
+Kongsikan gambar kenangan anda bersama kami 🤍
+</p>
+
+<input 
+type="file" 
+id="photo"
+accept="image/*">
+
+
+<br>
+
+
+<button onclick="uploadPhoto()">
+Upload Gambar
+</button>
+
+
+<p id="photoStatus"></p>
+
+
+</div>
+
+
+
+<div class="card">
+
+<h2>Wedding Moments</h2>
+
+<div id="gallery" class="gallery">
+
+</div>
+
+</div>
 
 <script>
 
@@ -222,6 +287,146 @@ document.getElementById("message").value="";
 
 loadWishes();
 
+const cloudName = "du42vuma";
+
+const uploadPreset = "alif-sabrina-wedding";
+
+
+
+async function uploadPhoto(){
+
+
+const file =
+document.getElementById("photo").files[0];
+
+
+if(!file){
+
+document.getElementById("photoStatus").innerHTML =
+"Sila pilih gambar dahulu 🤍";
+
+return;
+
+}
+
+
+
+document.getElementById("photoStatus").innerHTML =
+"Sedang upload gambar...";
+
+
+
+const formData = new FormData();
+
+formData.append("file", file);
+
+formData.append("upload_preset", uploadPreset);
+
+
+
+const response = await fetch(
+
+`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+
+{
+
+method:"POST",
+
+body:formData
+
+}
+
+);
+
+
+
+const data = await response.json();
+
+
+
+if(data.secure_url){
+
+
+
+await client
+.from("photos")
+.insert({
+
+image_url:data.secure_url
+
+});
+
+
+
+document.getElementById("photoStatus").innerHTML =
+"Terima kasih kerana berkongsi gambar 🤍";
+
+
+document.getElementById("photo").value="";
+
+
+loadPhotos();
+
+
+}
+
+else{
+
+
+document.getElementById("photoStatus").innerHTML =
+"Gambar gagal dimuat naik.";
+
+}
+
+
+}
+
+
+
+
+async function loadPhotos(){
+
+
+const {data,error}=await client
+.from("photos")
+.select("*")
+.order("created_at",
+{ascending:false});
+
+
+
+if(data){
+
+
+let output="";
+
+
+data.forEach(photo=>{
+
+
+output += `
+
+<img src="${photo.image_url}">
+
+`;
+
+
+
+});
+
+
+document.getElementById("gallery").innerHTML =
+output;
+
+
+}
+
+
+}
+
+
+
+loadPhotos();
 
 }
 
