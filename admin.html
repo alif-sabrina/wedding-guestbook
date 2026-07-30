@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Wedding Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+body{
+
+font-family:Georgia,serif;
+background:#F5E6D3;
+color:#5A1A1A;
+text-align:center;
+padding:40px;
+
+}
+
+
+.card{
+
+background:white;
+max-width:500px;
+margin:auto;
+padding:30px;
+border-radius:20px;
+
+}
+
+
+input{
+
+width:90%;
+padding:12px;
+margin:10px;
+border-radius:10px;
+border:1px solid #ddd;
+
+}
+
+
+button{
+
+background:#800000;
+color:white;
+border:none;
+padding:12px 30px;
+border-radius:20px;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="card">
+
+
+<h1>
+🌸 Wedding Admin
+</h1>
+
+
+<h2>Login</h2>
+
+
+<input 
+id="email"
+placeholder="Email">
+
+
+<input 
+id="password"
+type="password"
+placeholder="Password">
+
+
+<br>
+
+
+<button onclick="login()">
+
+Login
+
+</button>
+
+
+<p id="status"></p>
+
+
+</div>
+
+
+
+<script>
+
+
+const supabaseUrl = "https://myfezwspfogpwelwdzzo.supabase.co";
+
+const supabaseKey = "sb_publishable_ldG3XaF9OtIx4gHknXpGaA_OTuPN5Th";
+
+
+const client = supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+
+
+async function login(){
+
+
+const email =
+document.getElementById("email").value;
+
+
+const password =
+document.getElementById("password").value;
+
+
+
+const {data,error}=await client.auth.signInWithPassword({
+
+email:email,
+
+password:password
+
+});
+
+
+
+if(error){
+
+document.getElementById("status").innerHTML =
+"Login gagal 🤍";
+
+}
+
+else{
+
+document.getElementById("status").innerHTML =
+"Login berjaya 🌸";
+
+}
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
