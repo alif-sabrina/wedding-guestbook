@@ -95,6 +95,26 @@ Login
 <p id="status"></p>
 
 
+<div id="dashboard" style="display:none;">
+
+<h2>Dashboard</h2>
+
+
+<h3>
+💌 Jumlah Ucapan:
+<span id="wishCount">0</span>
+</h3>
+
+
+<h3>
+📷 Jumlah Gambar:
+<span id="photoCount">0</span>
+</h3>
+
+
+</div>
+
+
 </div>
 
 
@@ -148,12 +168,58 @@ else{
 document.getElementById("status").innerHTML =
 "Login berjaya 🌸";
 
+
+document.querySelector(".card").innerHTML = `
+
+<h1>🌸 Wedding Admin</h1>
+
+<h2>Dashboard</h2>
+
+
+<h3>
+💌 Jumlah Ucapan:
+<span id="wishCount">0</span>
+</h3>
+
+
+<h3>
+📷 Jumlah Gambar:
+<span id="photoCount">0</span>
+</h3>
+
+
+`;
+
+loadDashboard();
+
 }
 
 
 }
 
+async function loadDashboard(){
 
+
+const {count:wishes} = await client
+.from("wishes")
+.select("*",{count:"exact",head:true});
+
+
+const {count:photos} = await client
+.from("photos")
+.select("*",{count:"exact",head:true});
+
+
+document.getElementById("wishCount").innerHTML =
+wishes;
+
+
+document.getElementById("photoCount").innerHTML =
+photos;
+
+
+}
+  
 </script>
 
 
